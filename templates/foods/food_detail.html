@@ -14,22 +14,23 @@
 <div class="content_area">
     <img class="food_img" src="{{food.photo.url}}" alt="img">
     <p class="food_name">{{food.name}}</p>
+    <hr class="recipe_hr">
 
     <div class="food_infobox">
         <div class="food_quantity_box">
-            <img class="quantity_img" src="{% static 'core/img/quantity.png' %}"></img>
+            <img class="quantity_img" src="{% static 'core/img/quantity.png' %}">
             <p class="quantity_text">{{food.quantity}}개 남음</p>
         </div>
         <div class="food_time_box">
-            <img class="time_img" src="{% static 'core/img/clock.png' %}"></img>
+            <img class="time_img" src="{% static 'core/img/clock.png' %}">
             <p class="time_text">{{food.count_date}}</p>
         </div>
     </div>
-    
+
     <div class="food_detail_text">
         {% if how_to_store %}
         <p class="food_store_title">| 식자재 보관법</p>
-        <div class="food_store_text"> 
+        <div class="food_store_text">
             <p>{{how_to_store|linebreaks}}</p>
         </div>
         <p class="food_trim_title">| 식자재 손질법</p>

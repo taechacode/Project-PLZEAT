@@ -7,7 +7,7 @@ Home
 
 
 {% block css %}
-<link rel="stylesheet" href="{% static '../../core/static/core/css/home.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static 'core/css/home.css' %}" type="text/css">
 {% endblock css %}
 
 
@@ -22,9 +22,9 @@ Home
         <a href="{% url 'foods:food_detail' food.pk %}">
             <div class="food_card">
                 <img class="food_img" src="{{food.photo.url}}" alt="img">
-                <span>{{food}}</span>
-                <span>유통기한 : {{food.count_date}}</span>
+                <span class="food_title">{{food}}</span>
                 <span>잔량 : {{food.quantity}}개</span>
+                <span>유통기한 : {{food.count_date}}</span>
             </div>
         </a>
         {% endfor %}
