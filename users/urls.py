@@ -11,4 +11,7 @@ urlpatterns = [
     ),
     path("login/kakao/", views.kakao_login, name="kakao-login"),
     path("login/kakao/callback/", views.kakao_callback, name="kakao-callback"),
+
+    path("update/<int:pk>", views.profile_update, name="profile-update"),
+
 ]

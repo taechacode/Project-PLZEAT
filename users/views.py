@@ -51,8 +51,8 @@ def complete_verification(request, key):
 
 #### 소셜 로그인 ####
 def kakao_login(request):
-    client_id = os.environ.get("KAKAO_ID")
-    redirect_uri = "http://127.0.0.1:8000/users/login/kakao/callback"
+    client_id = "e72f124e5a2a725a6aee644df5be6a83"
+    redirect_uri = "http://plzeat-demo3.eba-ytmtwqdh.ap-northeast-2.elasticbeanstalk.com/users/login/kakao/callback"
     return redirect(
         f"https://kauth.kakao.com/oauth/authorize?client_id={client_id}&redirect_uri={redirect_uri}&response_type=code"
     )
@@ -65,8 +65,8 @@ class KakaoException(Exception):
 def kakao_callback(request):
     try:
         code = request.GET.get("code")
-        client_id = os.environ.get("KAKAO_ID")
-        redirect_uri = "http://127.0.0.1:8000/users/login/kakao/callback"
+        client_id = "e72f124e5a2a725a6aee644df5be6a83"
+        redirect_uri = "http://plzeat-demo3.eba-ytmtwqdh.ap-northeast-2.elasticbeanstalk.com/users/login/kakao/callback"
         token_request = requests.get(
             f"https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id={client_id}&redirect_uri={redirect_uri}&code={code}"
         )
@@ -82,25 +82,27 @@ def kakao_callback(request):
         profile_json = profile_request.json()
         kakao_account = profile_json.get("kakao_account")
         email = kakao_account.get("email", None)
-        if email is None:
-            raise KakaoException("Please also give me your email")
         properties = profile_json.get("properties")
         nickname = properties.get("nickname")
+        if email is None:
+            email = f"{nickname}@plzeatSociaLogin.com"
         profile_image = properties.get("profile_image")
         try:
             user = models.User.objects.get(email=email)
             if user.login_method != models.User.LOGIN_KAKAO:
-                raise KakaoException(f"Please login with: {user.login_method}.")
+                raise KakaoException(
+                    f"Please login with: {user.login_method}.")
         except models.User.DoesNotExist:
             user = models.User.objects.create(
                 email=email,
                 username=email,
                 first_name=nickname,
+                nickname=nickname,
                 login_method=models.User.LOGIN_KAKAO,
                 email_verified=True,
             )
             user.set_unusable_password()
-            user.save()
+            user.save(social_login=True)
             # if profile_image is not None:
             #     photo_request = requests.get(profile_image)
             #     user.avatar.save(
@@ -112,3 +114,31 @@ def kakao_callback(request):
     except KakaoException as e:
         messages.error(request, e)
         return redirect(reverse("core:login"))
+
+
+def profile_update(request, pk):
+    try:
+        user = models.User.objects.get(pk=pk)
+    except models.User.DoesNotExist:
+        messages.error(request, "접근할 수 없습니다")
+        return redirect(reverse('core:home'))
+    if user != request.user:
+        messages.error(request, "접근할 수 없습니다")
+        return redirect(reverse('core:home'))
+    if request.method == 'POST':
+        form = forms.ProfileUpdateForm(
+            request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            user.avatar = form.cleaned_data.get("avatar")
+            user.nickname = form.cleaned_data.get("nickname")
+            print(form.cleaned_data.get("password") == "")
+            if form.cleaned_data.get("password") != "":
+                user.set_password(form.cleaned_data.get("password"))
+            user.save(udt=True)
+            messages.success(request, f"회원정보가 수정되었습니다")
+            return redirect(reverse('core:home'))
+
+    else:
+        form = forms.ProfileUpdateForm(instance=user)
+
+    return render(request, 'users/profile_update.html', {"form": form})

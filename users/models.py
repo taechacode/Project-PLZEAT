@@ -24,6 +24,8 @@ class User(AbstractUser):
         max_length=50, choices=LOGIN_CHOICES, default=LOGIN_EMAIL
     )
     email_verified = models.BooleanField(default=True)
+    avatar = models.ImageField(
+        upload_to="avatar", default="avatar_default.png")
 
     def verify_email(self):
         if self.email_verified is False:
@@ -46,8 +48,11 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
-    def save(self, *args, **kwargs):
-        splited = self.email.split("@")
-        splited = splited[0]
-        self.nickname = splited
+    def save(self, udt=True, social_login=True, *args, **kwargs):
+        if (udt is True) or (social_login is True):
+            pass
+        else:
+            splited = self.email.split("@")
+            splited = splited[0]
+            self.nickname = splited
         super().save(*args, **kwargs)

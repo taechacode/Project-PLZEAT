@@ -11,23 +11,43 @@
 
 
 {% block content %}
+{% if foods %}
+<div class="big_select">
+    <select id="sort-select" onchange="location = this.value;">
 
-
+        {% if sort == 'mypost'  %}
+        <option class="sort-date" value="?sort">유통기한순</option>
+        <option class="sort-quantity" value="?sort=quantity">잔량순</option>
+        <option class="sort-mypost" value="?sort=mypost" selected>등록순</option>
+        {% elif sort == 'quantity' %}
+        <option class="sort-date" value="?sort">유통기한순</option>
+        <option class="sort-quantity" value="?sort=quantity" selected>잔량순</option>
+        <option class="sort-mypost" value="?sort=mypost">등록순</option>
+        {% else %}
+        <option class="sort-date" value="?sort" selected>유통기한순</option>
+        <option class="sort-quantity" value="?sort=quantity">잔량순</option>
+        <option class="sort-mypost" value="?sort=mypost">등록순</option>
+        {% endif %}
+    </select>
+</div>
 <div class="food_list">
     {% for food in foods %}
-    <a href="{% url 'foods:food_detail' food.pk %}">
-        <div class="food_card">
-            <div class="card_xbox">
-                <i class="fas fa-minus-circle"></i>
-            </div>
-            <img class="food_img" src="{{food.photo.url}}" alt="img">
-            <span class="food_title">{{food}}</span>
-            <span>잔량 : {{food.quantity}}개</span>
-            <span>유통기한 : {{food.count_date}}</span>
+    <div class="food_card">
+        <div class="card_xbox">
+            <a href="{% url 'foods:delete' food.pk %}"><i class="fas fa-minus-circle"></i></a>
         </div>
-    </a>
+        <a href="{% url 'foods:food_detail' food.pk %}"><img class="food_img" src="{{food.photo.url}}" alt="img"></a>
+        <a href="{% url 'foods:food_detail' food.pk %}"><span class="food_title">{{food.short_name}}</span></a>
+        <a href="{% url 'foods:food_detail' food.pk %}"><span>잔량 : {{food.quantity}}개</span></a>
+        <a href="{% url 'foods:food_detail' food.pk %}"><span>유통기한 : {{food.count_date}}</span></a>
+    </div>
     {% endfor %}
 </div>
+{% else %}
+<div class="big_does_not_exist">
+    <span class="food_does_not_exist">아직 등록된 식자재가 없습니다</span>
+</div>
+{% endif %}
 
 
 {% include "partials/paginator.html" %}

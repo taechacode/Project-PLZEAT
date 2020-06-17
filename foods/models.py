@@ -32,6 +32,12 @@ class Food(models.Model):
         users_models.User, related_name="foods", on_delete=models.CASCADE
     )
 
+    def short_name(self):
+        if len(self.name) > 6:
+            return self.name[:7] + ".."
+        else:
+            return self.name
+
     def count_date(self):
         cal_date = self.expired_date - timezone.localtime().date()
         cal_date = cal_date.days

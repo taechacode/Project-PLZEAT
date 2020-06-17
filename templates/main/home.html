@@ -14,21 +14,28 @@ Home
 {% block content %}
 <div class="main_top">
     <span>내 등록된 식자재</span>
-    <a href="{% url 'foods:list' %}"><i class="fas fa-plus-circle food_more"></i></a>
+    <a href="{% url 'foods:list' %}"><i class="fas fa-chevron-circle-down food_more"></i></a>
 </div>
 <div class="big_food_list">
+    {% if foods %}
     <div class="food_list">
         {% for food in foods %}
         <a href="{% url 'foods:food_detail' food.pk %}">
             <div class="food_card">
                 <img class="food_img" src="{{food.photo.url}}" alt="img">
-                <span class="food_title">{{food}}</span>
+                <span class="food_title">{{food.short_name}}</span>
                 <span>잔량 : {{food.quantity}}개</span>
                 <span>유통기한 : {{food.count_date}}</span>
             </div>
         </a>
         {% endfor %}
+
     </div>
+    {% else %}
+    <div class="big_does_not_exist">
+        <span class="food_does_not_exist">아직 등록된 식자재가 없습니다</span>
+    </div>
+    {% endif %}
 </div>
 {% endblock content %}
 

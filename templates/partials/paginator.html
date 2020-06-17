@@ -1,11 +1,19 @@
 <div class="paginator">
     <div class="page_center">
         {% for page in paginator.page_range %}
+        {% if sort %}
+        <a href="?page={{page}}&sort={{sort}}">
+            <div class="page">
+                {{page}}
+            </div>
+        </a>
+        {% else %}
         <a href="?page={{page}}">
             <div class="page">
                 {{page}}
             </div>
         </a>
+        {% endif %}
         {% endfor %}
     </div>
 </div>

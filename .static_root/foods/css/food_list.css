@@ -1,0 +1,140 @@
+.wrapper {
+  height: auto;
+}
+
+@media screen and (min-width: 768px) {
+  .food_card {
+    width: 28vw;
+    height: 22vh;
+    margin: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #fafafa;
+  }
+}
+
+@media screen and (max-width: 675px) {
+  .food_card {
+    width: 160px;
+    height: 130px;
+    margin: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #fafafa;
+  }
+}
+
+#sort-select {
+  margin-top: 0.3rem;
+  position: absolute;
+  right: 0.5rem;
+  top: -2rem;
+  border: none;
+  border-radius: 10px;
+  background-color: #ff8100;
+  color: white;
+  font-weight: bold;
+  padding: 0.2rem;
+  font-family: "NanumSquare", sans-serif;
+}
+
+.page_food_list {
+  display: float;
+  align-items: center;
+  height: 70vh;
+}
+
+.food_list {
+  margin-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.food_card {
+  width: 30vw;
+  height: 23.3vh;
+  margin: 0 1.666vw;
+  margin-bottom: 2vh;
+  border-radius: 15px;
+  padding-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fafafa;
+  font-weight: bold;
+}
+
+.food_card span {
+  margin-bottom: 0.2rem;
+  font-size: 0.8rem;
+  text-align: center;
+  word-break: break-all;
+}
+
+.food_title {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem !important;
+}
+
+.food_img {
+  width: 55px;
+  height: 55px;
+  margin-bottom: 0.2rem;
+}
+
+.card_xbox {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 1rem;
+}
+
+.card_xbox i {
+  color: #ff7d7d;
+}
+
+@media (width: 600px) {
+  .food_card {
+    width: 29.33vw;
+    height: 23vh;
+    margin: 0 2vw;
+    margin-bottom: 2vh;
+    border-radius: 15px;
+    padding-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fafafa;
+    font-weight: bold;
+  }
+
+  .food_card span {
+    margin-bottom: 0.2rem;
+    font-size: 0.8rem;
+    text-align: center;
+  }
+
+  .food_title {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem !important;
+  }
+
+  .food_img {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 0.2rem;
+  }
+}
+
+@media (min-width: 600px) {
+  html {
+    font-size: 18px;
+  }
+}

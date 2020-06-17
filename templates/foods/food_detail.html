@@ -12,6 +12,9 @@
 
 {% block content %}
 <div class="content_area">
+    <div class="detail_edit_box">
+        <a href="{% url 'foods:update' food.pk %}"><i class="fas fa-pen-square"></i></a>
+    </div>
     <img class="food_img" src="{{food.photo.url}}" alt="img">
     <p class="food_name">{{food.name}}</p>
     <hr class="recipe_hr">

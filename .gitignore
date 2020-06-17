@@ -1,8 +1,8 @@
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
+myvenv/
 db.sqlite3
+
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

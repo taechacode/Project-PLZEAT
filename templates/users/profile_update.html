@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_title %}
+Profile Update
+{% endblock page_title %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static '/users/css/login.css' %}" type="text/css">
+<style>
+    body {
+        background-color: #ffcd7a91;
+    }
+
+    .wrapper {
+        padding-top: 0;
+        position: relative;
+        top: 5vh;
+        height: 80vh;
+    }
+
+    .menu_middle_menus {
+        font-size: 1.8rem;
+    }
+
+    i {
+        font-size: 2rem !important;
+    }
+
+    .update_img_box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0.5rem;
+        padding-bottom: 1.3rem;
+    }
+
+    .profile_avatar {
+        border-radius: 50%;
+        width: 10rem;
+        height: 10rem;
+    }
+
+    #id_avatar {
+        border: none;
+    }
+
+    input #file-upload-button {
+        background-color: red;
+    }
+
+    .upload-btn-wrapper {
+        position: relative;
+        overflow: hidden;
+        text-align: center;
+        padding: 0 0.5rem;
+    }
+
+    .avatar-update-btn {
+        border: none;
+        border-radius: 5px;
+        background-color: #ff3b3b;
+        color: white;
+        font-weight: bold;
+        padding: 0.5rem 1rem;
+        font-size: 1.5rem;
+        font-family: "NanumSquare", sans-serif;
+    }
+
+    #id_avatar:hover {
+        cursor: pointer;
+    }
+
+    .upload-btn-wrapper input[type=file] {
+        font-size: 100px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+    }
+
+    .fa-bars {
+        font-size: 2.75rem !important;
+    }
+
+
+    @media (min-width: 500px) {
+        .wrapper {
+            height: 95vh;
+            top: 15vh;
+            padding-top: 1.5rem;
+        }
+    }
+
+    @media (max-height: 750px) {
+        .wrapper {
+            top: 15vh;
+            height: 90vh;
+            width: 90%;
+            margin-bottom: 2rem;
+        }
+    }
+</style>
+{% endblock css %}
+
+
+{% block content %}
+<form class="login_form" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    {% if form.none_field_errors %}
+    {% for error in none_field_errors  %}
+    <span class="field_error">{{error}}</span>
+    {% endfor %}
+    {% endif %}
+
+    {% for field in form  %}
+    <div class="input {% if field.errors %}has_error{% endif %}">
+
+        {% if field.name == 'avatar'  %}
+        <div class="input ">
+            <div class="update_img_box">
+                <img class="profile_avatar" src="{{user.avatar.url}}" id="image_section" alt="avatar" />
+            </div>
+            <div class="upload-btn-wrapper">
+                <input type="file" name="avatar" accept="image/*" id="id_avatar">
+                <button class="avatar-update-btn">이미지 변경</button>
+            </div>
+        </div>
+        {% else %}
+        <span style="font-weight: bold; font-size: 1.1rem">{{field.label}}</span>
+        {{field}}
+        {% endif %}
+
+        {% if field.errors %}
+        {% for error in field.errors  %}
+        <span class="error">{{error}}</span>
+        {% endfor %}
+        {% endif %}
+    </div>
+
+    {% endfor %}
+    <button class="login_btn">회원정보 수정</button>
+
+</form>
+{% endblock content %}
+
+{% block script %}
+<script src="{% static 'users/js/image_preview.js' %}"></script>
+{% endblock script %}

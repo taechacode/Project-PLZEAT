@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_title %}
+추천레시피
+{% endblock page_title %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'recipies/css/recipe_list.css' %}" type="text/css">
+<style>
+    .recipe_card{
+    }
+    .card_xbox {
+        margin-top:0.4rem;
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        padding: 0.4rem;
+    }
+
+    .card_xbox i {
+        color: #ff7d7d;
+    }
+</style>
+{% endblock css %}
+
+{% block content %}
+
+{% if paged_recipes %}
+<div class="recipe_list">
+    {% for recipe in paged_recipes %}
+
+    <a href="{% url 'recipies:recipe_detail' recipe.pk %}">
+        <div class="recipe_card">
+            <div class="card_xbox">
+                <i class="fas fa-minus-circle"></i>
+            </div>
+            <div class="recipe_big_img">
+                <span class="recipe_per per{{forloop.counter0}}"></span>
+                <img class="recipe_img" src="{{recipe.photo.url}}" alt="recipe">
+            </div>
+            <div class="text_test">{{recipe.name}}</div>
+        </div>
+
+    </a>
+
+    {% endfor %}
+</div>
+{% else %}
+<div class="big_does_not_exist">
+    <span class="food_does_not_exist">추천 가능한 레시피가 없습니다</span>
+</div>
+{% endif %}
+
+{% include "partials/paginator.html" %}
+
+{% endblock content %}
+
+
+{% block script %}
+<script>
+    const per = document.querySelectorAll(".recipe_per");
+
+    function replaceAll(str, searchStr, replaceStr) {
+        return str.split(searchStr).join(replaceStr);
+    }
+
+
+    let list = "{{percent}}"
+    list = list.replace("[", "");
+    list = list.replace("]", "");
+    list = replaceAll(list, " ", "");
+    list = list.split(',');
+    console.log(list);
+    let count = 0;
+    try {
+        const page_number = {{ page_number }}
+        const how_show = {{ how_show }};
+        count = (page_number - 1) * how_show;
+    }
+    catch (err) {
+        console.log(err);
+    }
+
+
+    for (const x of per) {
+        console.log(x)
+        x.innerHTML = list[count] + "%보유";
+        count += 1;
+    }
+
+</script>
+{% endblock script %}

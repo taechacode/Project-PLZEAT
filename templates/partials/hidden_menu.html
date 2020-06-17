@@ -1,5 +1,16 @@
 <div class="jsHiddenMenu hidden_menu">
     <div class="menu_top">
+    </div>
+    <div class="menu_middle">
+        <a href="{% url 'foods:list' %}" class="menu_middle_menus">등록한 식자재</a>
+        <a href="{% url 'recipies:mylist' user.pk %}" class="menu_middle_menus">내가 만든 레시피</a>
+        <a href="{% url 'recipies:recipe_list' user.pk %}" class="menu_middle_menus">추천 레시피</a>
+        <a href="{% url 'foods:register' %}" class="menu_middle_menus">식자재 등록</a>
+        <a href="{% url 'recipies:register' %}" class="menu_middle_menus">레시피 등록</a>
+    </div>
+    <div class="menu_bottom">
         <a href="{% url 'users:logout' %}"><i class="fas fa-power-off power-off"></i></a>
+        <a href="{% url 'users:profile-update' user.pk %}"><i class="fas fa-cog cog"></i></a>
+
     </div>
 </div>

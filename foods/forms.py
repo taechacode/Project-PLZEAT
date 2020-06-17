@@ -16,7 +16,7 @@ class FoodRegisterForm(forms.ModelForm):
             "name": forms.TextInput(attrs={"placeholder": "식자재명"}),
             "expired_date": DatePickerInput(
                 attrs={"placeholder": "유통기한 마감일"},
-                options={"format": "YYYY-MM-DD", "locale": "ko",},
+                options={"format": "YYYY-MM-DD"},
             ),
             "quantity": forms.NumberInput(attrs={"placeholder": "갯수"}),
         }

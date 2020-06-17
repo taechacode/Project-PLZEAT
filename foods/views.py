@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, UpdateView
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
@@ -17,10 +17,18 @@ def food_list(request):
     if request.user.is_anonymous:
         return redirect(reverse("core:login"))
     page = request.GET.get("page")
-    food_list = foods_model.Food.objects.filter(user=request.user.pk)
+    sort = request.GET.get('sort', '')
+    if sort == 'mypost':  # 등록순
+        food_list = foods_model.Food.objects.filter(user=request.user.pk)
+    elif sort == 'quantity':  # 잔량순
+        food_list = foods_model.Food.objects.filter(
+            user=request.user.pk).order_by('-quantity')
+    else:  # 유통기한 마감일순, 디폴트 정렬
+        food_list = foods_model.Food.objects.filter(
+            user=request.user.pk).order_by('expired_date')
     paginator = Paginator(food_list, 9)
     foods = paginator.get_page(page)
-    context = {"foods": foods, "paginator": paginator}
+    context = {"foods": foods, "paginator": paginator, 'sort': sort}
     return render(request, "foods/food_list.html", context)
 
 
@@ -76,6 +84,20 @@ class FoodRegisterView(CreateView, mixins.LoggedInOnlyView):
         context = super(FoodRegisterView, self).get_context_data(**kwargs)
         context["my_form"] = context["form"]
         return context
+
+
+def food_update(request, pk):
+    food = foods_model.Food.objects.get(pk=pk)
+    if request.method == "POST":
+        form = forms.FoodRegisterForm(request.POST, instance=food)
+        if form.is_valid():
+            food = form.save()
+            return redirect('foods:list')
+
+    else:
+        form = forms.FoodRegisterForm(instance=food)
+
+    return render(request, 'foods/food_update.html', {'my_form': form})
 
 
 def food_delete(request, pk):
